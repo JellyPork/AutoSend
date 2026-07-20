@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">AutoSend</string>
+
+    <string name="accessibility_service_label">AutoSend — envío automático</string>
+    <string name="accessibility_service_description">
+        Permite que AutoSend pulse el botón \"Enviar\" en WhatsApp/Messenger a la hora que programaste.
+        Solo actúa durante un envío programado; no lee ni recopila el contenido de tus chats.
+    </string>
+
+    <!-- Notification channels -->
+    <string name="channel_sending_name">Envíos programados</string>
+    <string name="channel_sending_desc">Se muestra mientras AutoSend ejecuta un envío programado.</string>
+    <string name="channel_result_name">Resultado de envíos</string>
+    <string name="channel_result_desc">Confirma si un mensaje programado se envió o falló.</string>
+</resources>

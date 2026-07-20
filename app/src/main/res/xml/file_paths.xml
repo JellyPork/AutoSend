@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Attachments are copied here (getFilesDir()/attachments) and shared via FileProvider. -->
+    <files-path
+        name="attachments"
+        path="attachments/" />
+</paths>
