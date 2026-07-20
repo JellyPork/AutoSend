@@ -93,6 +93,13 @@ class AutoSendAccessibilityService : AccessibilityService() {
 
     private fun handleSend(roots: List<AccessibilityNodeInfo>, job: PendingSend.Job) {
         cancelPendingCompletion()
+        // Safety cap: never tap Send more than a couple of times for one message. A chat/caption
+        // send in WhatsApp needs at most 2 taps (next arrow → send); anything beyond that risks
+        // fanning out to multiple recipients, so we stop and finish instead.
+        if (sendTaps >= MAX_SEND_TAPS) {
+            scheduleCompletion(job)
+            return
+        }
         val send = findSendNode(roots, job.targetPackage)
         if (send != null) {
             val ok = tapNode(send)
@@ -313,6 +320,7 @@ class AutoSendAccessibilityService : AccessibilityService() {
         private const val TAG = "AutoSendA11y"
         private const val COMPLETION_DEBOUNCE_MS = 900L
         private const val SCAN_LOG_INTERVAL_MS = 1500L
+        private const val MAX_SEND_TAPS = 2
 
         /** Contact-name view ids across WhatsApp screens (share picker + home list). */
         private val CONTACT_NAME_IDS = listOf(

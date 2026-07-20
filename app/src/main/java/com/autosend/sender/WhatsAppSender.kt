@@ -23,6 +23,8 @@ import java.util.ArrayList
 object WhatsAppSender {
 
     class NotInstalledException(pkg: String) : Exception("La app destino no está instalada: $pkg")
+    class UnsupportedTargetException(label: String) :
+        Exception("$label no está soportado (envío no seguro). Usa WhatsApp.")
 
     fun isInstalled(context: Context, pkg: String): Boolean =
         try {
@@ -34,6 +36,9 @@ object WhatsAppSender {
     /** Returns an intent that opens the target app ready to send, or throws if it isn't installed. */
     fun buildIntent(context: Context, data: MessageWithAttachments): Intent {
         val msg = data.message
+        // Hard safety stop: Messenger's share sheet has one Send button per contact, so automating
+        // it can fan out to many recipients. Refuse it outright until it's supported safely.
+        if (msg.targetApp == TargetApp.MESSENGER) throw UnsupportedTargetException(msg.targetApp.label)
         val pkg = msg.targetApp.packageName
         if (!isInstalled(context, pkg)) throw NotInstalledException(pkg)
 

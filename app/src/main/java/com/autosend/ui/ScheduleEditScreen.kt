@@ -208,7 +208,9 @@ private fun AppSelector(selected: TargetApp, onSelect: (TargetApp) -> Unit) {
                 Icon(Icons.Filled.ArrowDropDown, contentDescription = null)
             }
             DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                TargetApp.entries.forEach { app ->
+                // Messenger is intentionally NOT selectable: its "Send to…" sheet has a Send button
+                // per contact, which the automation can't drive safely yet.
+                TargetApp.entries.filter { it != TargetApp.MESSENGER }.forEach { app ->
                     DropdownMenuItem(
                         text = { Text(app.label) },
                         onClick = { onSelect(app); expanded = false },
